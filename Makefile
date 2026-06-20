@@ -2,7 +2,7 @@
 # Customer Churn MLOps — Automation Makefile
 # ============================================================
 
-.PHONY: install format lint test train docker-build docker-up docker-down clean
+.PHONY: install format lint test train docker-build docker-up docker-down monitor check-retrain clean
 
 PYTHON_ENV_DIR = C:/Users/HP/anaconda3/envs/churn-mlops
 PYTHON = $(PYTHON_ENV_DIR)/python.exe
@@ -39,6 +39,12 @@ docker-up:
 
 docker-down:
 	docker-compose down
+
+monitor:
+	PYTHONIOENCODING=utf-8 PYTHONUTF8=1 $(PYTHON) src/monitoring/drift_detector.py
+
+check-retrain:
+	PYTHONIOENCODING=utf-8 PYTHONUTF8=1 $(PYTHON) src/monitoring/check_drift_and_retrain.py
 
 clean:
 	rm -rf .pytest_cache src/__pycache__ api/__pycache__ tests/__pycache__ .coverage coverage.xml
