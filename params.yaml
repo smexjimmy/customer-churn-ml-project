@@ -20,7 +20,7 @@ data:
 
 # ── Feature Engineering ───────────────────────────────────
 features:
-  # Categorical columns to one-hot encode
+  # Categorical columns to label encode
   categorical_columns:
     - gender
     - Partner
@@ -39,6 +39,7 @@ features:
     - PaymentMethod
   # Numeric columns to scale
   numeric_columns:
+    - SeniorCitizen
     - tenure
     - MonthlyCharges
     - TotalCharges

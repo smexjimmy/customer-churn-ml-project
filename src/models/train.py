@@ -14,12 +14,13 @@ import logging
 import os
 
 import joblib
-import mlflow
 import mlflow.xgboost
 import pandas as pd
 import yaml
 from sklearn.metrics import roc_auc_score
 from xgboost import XGBClassifier
+
+import mlflow
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -51,7 +52,6 @@ def build_model(params: dict) -> XGBClassifier:
         random_state=mp["random_state"],
         eval_metric=mp["eval_metric"],
         early_stopping_rounds=params["training"]["early_stopping_rounds"],
-        use_label_encoder=False,
     )
 
 
@@ -59,10 +59,12 @@ if __name__ == "__main__":
     params = load_params()
     os.makedirs("models", exist_ok=True)
 
-    # Set MLflow tracking
-    mlflow.set_tracking_uri(
-        os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
-    )
+    # Set MLflow tracking — defaults to local SQLite if server env var not set
+    # NOTE: mlflow 3.x dropped file-store; sqlite:/// is the local alternative
+    os.makedirs("mlruns", exist_ok=True)
+    tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "sqlite:///mlruns/mlflow.db")
+    mlflow.set_tracking_uri(tracking_uri)
+    logger.info(f"MLflow tracking URI: {tracking_uri}")
     mlflow.set_experiment(params["training"]["experiment_name"])
 
     X_train, y_train, X_val, y_val = load_data(params)
