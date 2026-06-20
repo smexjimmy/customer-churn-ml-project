@@ -7,11 +7,8 @@ LABEL org.opencontainers.image.description="MLflow with PostgreSQL backend and M
 # Install it first before mlflow
 RUN pip install --no-cache-dir "setuptools<82" wheel && \
     pip install --no-cache-dir \
-        mlflow==2.13.2 \
+        mlflow==3.14.0 \
         boto3==1.34.144 \
         psycopg2-binary==2.9.9
 
-EXPOSE 5000
-
-ENTRYPOINT ["mlflow", "server"]
-CMD ["--host", "0.0.0.0", "--port", "5000"]
+CMD ["mlflow", "server", "--host", "0.0.0.0", "--port", "5000"]

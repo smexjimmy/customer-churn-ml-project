@@ -22,12 +22,12 @@ stages:
       size: 978285
     - path: params.yaml
       hash: md5
-      md5: 15bd4a4c6a625e522d8116e4a0e4b603
-      size: 2031
+      md5: b2be62e134c1f28c4238d2b08df31c25
+      size: 2049
     - path: src/data/preprocess.py
       hash: md5
-      md5: fc0521eacc9b08b98727de5fd1b0bece
-      size: 3219
+      md5: 2741f0bc499769fa3258921ddd908577
+      size: 5462
     params:
       params.yaml:
         data:
@@ -59,41 +59,42 @@ stages:
           - PaperlessBilling
           - PaymentMethod
           numeric_columns:
+          - SeniorCitizen
           - tenure
           - MonthlyCharges
           - TotalCharges
     outs:
     - path: data/processed/test.csv
       hash: md5
-      md5: f78ced26d137a0bbc007e91c1fb10644
-      size: 132126
+      md5: 5d743d23c772b205e4a91574fe3aca1e
+      size: 157297
     - path: data/processed/train.csv
       hash: md5
-      md5: 172a6b6f7edf119bd86112918078c2e1
-      size: 461606
+      md5: cb4a920dc237d5a04f5cdc924d14991b
+      size: 549397
     - path: data/processed/val.csv
       hash: md5
-      md5: f88632e8f7c5efd75050020cc8586e1d
-      size: 66249
+      md5: 406efc2060965811307f07819f004bea
+      size: 78800
   train:
     cmd: C:\Users\HP\anaconda3\envs\churn-mlops\python.exe src/models/train.py
     deps:
     - path: data/processed/train.csv
       hash: md5
-      md5: 172a6b6f7edf119bd86112918078c2e1
-      size: 461606
+      md5: cb4a920dc237d5a04f5cdc924d14991b
+      size: 549397
     - path: data/processed/val.csv
       hash: md5
-      md5: f88632e8f7c5efd75050020cc8586e1d
-      size: 66249
+      md5: 406efc2060965811307f07819f004bea
+      size: 78800
     - path: params.yaml
       hash: md5
-      md5: 15bd4a4c6a625e522d8116e4a0e4b603
-      size: 2031
+      md5: b2be62e134c1f28c4238d2b08df31c25
+      size: 2049
     - path: src/models/train.py
       hash: md5
-      md5: 96e31eaf22c9434899a1443582b57db8
-      size: 3255
+      md5: 1d97ac3a37d278f63d69dafbb1461492
+      size: 3256
     params:
       params.yaml:
         model:
@@ -116,20 +117,20 @@ stages:
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: c9e847eb8ab06b894b30ca9d34ecfa83
-      size: 222906
+      md5: f90f8d70746bef756e46bcf556f710cb
+      size: 222908
   evaluate:
     cmd: C:\Users\HP\anaconda3\envs\churn-mlops\python.exe
       src/models/evaluate.py
     deps:
     - path: data/processed/test.csv
       hash: md5
-      md5: f78ced26d137a0bbc007e91c1fb10644
-      size: 132126
+      md5: 5d743d23c772b205e4a91574fe3aca1e
+      size: 157297
     - path: models/model.pkl
       hash: md5
-      md5: c9e847eb8ab06b894b30ca9d34ecfa83
-      size: 222906
+      md5: f90f8d70746bef756e46bcf556f710cb
+      size: 222908
     - path: src/models/evaluate.py
       hash: md5
       md5: 195cff89bb12e8a6cfc5562dc1735202
