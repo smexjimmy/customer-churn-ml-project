@@ -1,0 +1,55 @@
+# ============================================================
+# Customer Churn MLOps — DVC Pipeline
+# Run: dvc repro   (to execute all stages in order)
+# Run: dvc dag     (to visualise the pipeline)
+# ============================================================
+
+stages:
+
+  # Stage 1: Download and save raw data
+  ingest:
+    cmd: python src/data/ingest.py
+    deps:
+      - src/data/ingest.py
+    outs:
+      - data/raw/churn.csv
+
+  # Stage 2: Clean, encode, and split data
+  preprocess:
+    cmd: python src/data/preprocess.py
+    deps:
+      - src/data/preprocess.py
+      - data/raw/churn.csv
+      - params.yaml
+    params:
+      - data
+      - features
+    outs:
+      - data/processed/train.csv
+      - data/processed/val.csv
+      - data/processed/test.csv
+
+  # Stage 3: Train model and log to MLflow
+  train:
+    cmd: python src/models/train.py
+    deps:
+      - src/models/train.py
+      - data/processed/train.csv
+      - data/processed/val.csv
+      - params.yaml
+    params:
+      - model
+      - training
+    outs:
+      - models/model.pkl
+
+  # Stage 4: Evaluate on held-out test set
+  evaluate:
+    cmd: python src/models/evaluate.py
+    deps:
+      - src/models/evaluate.py
+      - models/model.pkl
+      - data/processed/test.csv
+    metrics:
+      - metrics/metrics.json:
+          cache: false   # Show in dvc metrics show

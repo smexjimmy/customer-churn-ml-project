@@ -1,0 +1,65 @@
+# ============================================================
+# Customer Churn MLOps — Parameters
+# This file is tracked by Git AND DVC.
+# All scripts read from here — never hardcode params!
+# ============================================================
+
+# ── Data Parameters ──────────────────────────────────────
+data:
+  raw_path: data/raw/churn.csv
+  train_path: data/processed/train.csv
+  val_path: data/processed/val.csv
+  test_path: data/processed/test.csv
+  target_column: Churn
+  test_size: 0.2
+  val_size: 0.1
+  random_state: 42
+  # Columns to drop (IDs, irrelevant fields)
+  drop_columns:
+    - customerID
+
+# ── Feature Engineering ───────────────────────────────────
+features:
+  # Categorical columns to one-hot encode
+  categorical_columns:
+    - gender
+    - Partner
+    - Dependents
+    - PhoneService
+    - MultipleLines
+    - InternetService
+    - OnlineSecurity
+    - OnlineBackup
+    - DeviceProtection
+    - TechSupport
+    - StreamingTV
+    - StreamingMovies
+    - Contract
+    - PaperlessBilling
+    - PaymentMethod
+  # Numeric columns to scale
+  numeric_columns:
+    - tenure
+    - MonthlyCharges
+    - TotalCharges
+
+# ── Model Hyperparameters ────────────────────────────────
+model:
+  type: xgboost        # xgboost | logistic_regression | random_forest
+  n_estimators: 100
+  max_depth: 6
+  learning_rate: 0.1
+  subsample: 0.8
+  colsample_bytree: 0.8
+  scale_pos_weight: 3  # Handles class imbalance (churn ~26%)
+  random_state: 42
+  eval_metric: auc
+
+# ── Training Parameters ──────────────────────────────────
+training:
+  experiment_name: customer-churn
+  run_name: baseline-xgboost
+  cv_folds: 5
+  early_stopping_rounds: 20
+  model_output_path: models/model.pkl
+  metrics_output_path: metrics/metrics.json
