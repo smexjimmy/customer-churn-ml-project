@@ -87,6 +87,20 @@ services:
     ports:
       - "5000:5000"   # MLflow UI
 
+  # ── API: FastAPI prediction service ───────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: churn_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=models/model.pkl
+      - ENCODERS_PATH=models/label_encoders.pkl
+      - SCALER_PATH=models/standard_scaler.pkl
+
 # ── Volumes ────────────────────────────────────────────────
 volumes:
   postgres_data:

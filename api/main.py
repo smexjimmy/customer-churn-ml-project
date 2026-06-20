@@ -62,7 +62,7 @@ def predict_churn(customer: CustomerFeatures):
         - risk_level: "low" | "medium" | "high"
         - model_version: Version identifier
     """
-    features = customer.dict()
+    features = customer.model_dump()
     result = run_prediction(features, params)
     result["model_version"] = "0.1.0"
     return result

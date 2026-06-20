@@ -51,11 +51,9 @@ def preprocess_features(features: dict, params: dict) -> pd.DataFrame:
     """
     encoders, scaler = load_preprocessors()
 
-    # Load the actual training data to get correct column order
-    train_df = pd.read_csv(params["data"]["train_path"])
-    expected_cols = [
-        c for c in train_df.columns if c != params["data"]["target_column"]
-    ]
+    # Get expected column order directly from the trained model
+    model = load_model()
+    expected_cols = list(model.feature_names_in_)
 
     # Create DataFrame with all expected columns in order
     df = pd.DataFrame([features])[expected_cols].copy()

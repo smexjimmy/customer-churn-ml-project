@@ -1,0 +1,15 @@
+# ============================================================
+# Customer Churn MLOps — API Serving Dependencies
+# ============================================================
+
+pandas==2.3.3
+numpy==2.4.6
+scikit-learn==1.9.0
+xgboost==3.3.0
+imbalanced-learn==0.12.0
+joblib==1.5.3
+fastapi==0.138.0
+uvicorn[standard]==0.49.0
+pydantic==2.13.4
+python-dotenv>=1.0.0
+pyyaml>=6.0.0

@@ -6,12 +6,13 @@ LABEL org.opencontainers.image.description="FastAPI service for customer churn p
 WORKDIR /app
 
 # Install dependencies first (cached layer)
-COPY requirements.txt .
+COPY api/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Copy application code and model artifacts
 COPY src/ ./src/
 COPY api/ ./api/
+COPY models/ ./models/
 COPY params.yaml .
 
 # Non-root user for security
